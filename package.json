@@ -1,12 +1,13 @@
 {
   "dependencies": {
+    "dotenv": "^16.5.0",
+    "env": "^0.0.2",
     "express": "^5.1.0"
   },
   "name": "webapp-express",
   "version": "1.0.0",
   "description": "movie_server",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node --watch app.js"
   },
