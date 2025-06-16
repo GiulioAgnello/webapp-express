@@ -6,7 +6,14 @@ const index = (req, res) => {
   // query per la chiamata
   const sql = `SELECT * FROM movie_db.movies`;
   // esecuzione della query
-  connection.query(sql, (err, results) => {
+  connection.query(sql, (err, movie) => {
+    if (err) return res.status(500).json({ error: `database query failed` });
+    res.json(movie);
+  });
+  // call for reviews
+  const sqlReviews = ` SELECT movies.*, reviews.* FROM movies JOIN reviews ON movies.id = movie_id`;
+
+  connection.query(sqlReviews, (err, results) => {
     if (err) return res.status(500).json({ error: `database query failed` });
     res.json(results);
   });
