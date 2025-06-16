@@ -1,36 +1,52 @@
 // import
 const connection = require(`../Data/db`);
 
-// controller delle routers
+// controller routers
 const index = (req, res) => {
-  // query per la chiamata
-  const sql = `SELECT * FROM movie_db.movies`;
-  // esecuzione della query
+  // date to take a query for movie
+  const sql = `
+  SELECT * 
+  FROM movie_db.movies
+  `;
+  // query for movie
   connection.query(sql, (err, movie) => {
     if (err) return res.status(500).json({ error: `database query failed` });
     res.json(movie);
   });
 };
 const show = (req, res) => {
-  // query per la chiamata
+  // date to take a query for movie and reviews
   const { id } = req.params;
-  const sql = `SELECT * FROM movie_db.movies WHERE id = ?`;
-  // con join
-  const reviewsSql = `SELECT movies.*, reviews.* FROM movies JOIN reviews ON movies.id = movie_id WHERE id = ?`;
-  // esecuzione della query
+  const sql = `
+  SELECT * 
+  FROM movie_db.movies 
+  WHERE id = ?
+  `;
+  // join
+  const reviewsSql = `
+    SELECT reviews.*
+    FROM movies 
+        JOIN reviews 
+            ON movies.id = reviews.movie_id 
+    WHERE movies.id = ?
+  `;
+  // query for movie
   connection.query(sql, [id], (err, movieResults) => {
     if (err) return res.status(500).json({ error: `database query failed` });
     if (movieResults.length === 0)
       return res.status(404).json({ error: `movie not found` });
     const movie = movieResults[0];
-    movieResults.map((m) => {
-      connection.query(reviewsSql, [id], (err, reviewResults) => {
-        if (err)
-          return res.status(500).json({ error: "Database query failed" });
-        // add review to movie
-        movie.review = reviewResults;
-        res.jeson(movie, m);
-      });
+    // query for reviews
+    connection.query(reviewsSql, [movie.id], (err, reviewResults) => {
+      if (err) return res.status(500).json({ error: "Database query failed" });
+      console.log(reviewResults);
+      //   map to take info that i need
+      movie.reviews = reviewResults.map((review) => ({
+        id: review.id,
+        vote: review.vote,
+        text: review.text,
+      }));
+      res.json(movie);
     });
   });
 };
