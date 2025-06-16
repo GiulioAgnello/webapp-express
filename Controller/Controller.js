@@ -23,11 +23,14 @@ const show = (req, res) => {
     if (movieResults.length === 0)
       return res.status(404).json({ error: `movie not found` });
     const movie = movieResults[0];
-    connection.query(reviewsSql, [id], (err, reviewResults) => {
-      if (err) return res.status(500).json({ error: "Database query failed" });
-      // add review to movie
-      movie.review = reviewResults;
-      res.jeson(movie);
+    movieResults.map((m) => {
+      connection.query(reviewsSql, [id], (err, reviewResults) => {
+        if (err)
+          return res.status(500).json({ error: "Database query failed" });
+        // add review to movie
+        movie.review = reviewResults;
+        res.jeson(movie, m);
+      });
     });
   });
 };
