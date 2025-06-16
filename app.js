@@ -1,6 +1,7 @@
 // Import and config
 const express = require("express");
 require("dotenv").config();
+const movieRouter = require("./Routers/moviesRouter");
 
 // config app and kays
 const app = express();
@@ -11,8 +12,8 @@ const urlHost = process.env.APP_HOST;
 app.use(express.static("public"));
 app.use(express.json());
 
-// route
-app.get("/", (req, res) => res.send("Movie Database!"));
+// access all routers
+app.use("/movie", movieRouter);
 
 // listening
 app.listen(port, () =>
