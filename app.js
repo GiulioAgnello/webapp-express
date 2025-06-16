@@ -2,6 +2,8 @@
 const express = require("express");
 require("dotenv").config();
 const movieRouter = require("./Routers/moviesRouter");
+const handlerError = require("./middleware/hendolerror");
+const errorFound = require("./middleware/errorfound");
 
 // config app and kays
 const app = express();
@@ -14,6 +16,10 @@ app.use(express.json());
 
 // access all routers
 app.use("/movie", movieRouter);
+
+// error middleware
+app.use(handlerError);
+app.use(errorFound);
 
 // listening
 app.listen(port, () =>
