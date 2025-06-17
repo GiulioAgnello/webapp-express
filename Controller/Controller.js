@@ -43,6 +43,7 @@ const show = (req, res) => {
       //   map to take info that i need
       movie.reviews = reviewResults.map((review) => ({
         id: review.id,
+        name: review.name,
         vote: review.vote,
         text: review.text,
       }));
