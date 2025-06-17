@@ -1,6 +1,7 @@
 // Import and config
 const express = require("express");
 require("dotenv").config();
+const cors = require("cors");
 const movieRouter = require("./Routers/moviesRouter");
 const handlerError = require("./middleware/hendolerror");
 const errorFound = require("./middleware/errorfound");
@@ -15,7 +16,7 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // access all routers
-app.use("/movie", movieRouter);
+app.use("/movie", cors, movieRouter);
 
 // error middleware
 app.use(handlerError);
