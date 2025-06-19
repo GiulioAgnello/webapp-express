@@ -9,7 +9,7 @@ router.get(`/`, controllerRouter.index);
 router.get("/:id", controllerRouter.show);
 
 // add reviews route
-router.post("/:id/reviews", controllerRouter.storeReview);
+router.post(`/:id/reviews`, controllerRouter.storeReview);
 
 // export
 module.exports = router;

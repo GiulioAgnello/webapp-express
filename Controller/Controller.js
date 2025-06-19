@@ -53,7 +53,7 @@ const show = (req, res) => {
 };
 const storeReview = (req, res) => {
   const { id } = req.params;
-  // const movie_id = id;
+
   const { name, vote, text } = req.body;
 
   let errors = [];
