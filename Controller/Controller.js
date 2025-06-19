@@ -70,6 +70,12 @@ const storeReview = (req, res) => {
       message: "Specifica un nome",
     });
   }
+  if (!text) {
+    errors.push({
+      inputError: "text",
+      message: "scrivi un testo per la recensione",
+    });
+  }
 
   if (errors.length) {
     return res.status(403).json({ message: "invalid input added", errors });
